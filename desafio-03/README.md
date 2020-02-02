@@ -21,4 +21,5 @@ $ yarn
 $ yarn sequelize db:migrate
 $ yarn sequelize db:seed:all
 $ yarn dev
+$ yarn queue
 ```

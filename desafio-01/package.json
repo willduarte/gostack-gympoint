@@ -2,6 +2,8 @@
   "name": "desafio01",
   "version": "1.0.0",
   "main": "index.js",
+  "repository": "git@github.com:willduarte/gostack-gympoint.git",
+  "author": "Willian Duarte de Andrade <willianduarte.me@gmail.com>",
   "license": "MIT",
   "scripts": {
     "dev": "nodemon index.js"

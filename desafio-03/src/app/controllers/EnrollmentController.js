@@ -4,6 +4,11 @@ import Enrollment from '../models/Enrollment'
 import Student from '../models/Student'
 import Plan from '../models/Plan'
 
+import WelcomeMail from '../jobs/WelcomeMail'
+import UpdatePlanMail from '../jobs/UpdatePlanMail'
+
+import Queue from '../../lib/Queue'
+
 class EnrollmentController {
   async index(req, res) {
     const enrollments = await Enrollment.findAll()
@@ -41,9 +46,14 @@ class EnrollmentController {
       price,
     })
 
-    // TODO: Send welcome e-mail to student
-    // Quando um aluno realiza uma matrícula ele recebe um e-mail com detalhes da sua inscrição na academia como plano, data de término,
-    // valor e uma mensagem de boas-vindas.
+    Queue.add(WelcomeMail.key, {
+      student_name: student.name,
+      student_email: student.email,
+      plan_title: plan.title,
+      start_date,
+      end_date,
+      price,
+    })
 
     return res.json(enrollment)
   }
@@ -83,8 +93,14 @@ class EnrollmentController {
       price,
     })
 
-    // TODO: Send update e-mail to student
-    // Quando a matrícula do aluno é atualizada, enviar e-mail com a nova data final e novo valor.
+    Queue.add(UpdatePlanMail.key, {
+      student_name: student.name,
+      student_email: student.email,
+      plan_title: plan.title,
+      start_date,
+      end_date,
+      price,
+    })
 
     return res.json({ student_id, plan_id, start_date, end_date, price })
   }

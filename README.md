@@ -1,4 +1,4 @@
-# Go Stack - aulas
+# Go Stack - Gympoint
 
 ## Requirements
 
@@ -9,9 +9,13 @@
 ## Docker commands
 
 ```bash
-$ docker start postgres
-$ docker start mongodb
+$ docker start mysql
 $ docker start redis
+```
+
+## Challenge commands
+
+```bash
 $ yarn dev
 $ yarn queue
 ```

@@ -1,4 +1,8 @@
 import HelpOrder from '../models/HelpOrder'
+import Student from '../models/Student'
+
+import AnsweredHelpOrderMail from '../jobs/AnsweredHelpOrderMail'
+import Queue from '../../lib/Queue'
 
 class HelpOrderController {
   async index(req, res) {
@@ -30,9 +34,23 @@ class HelpOrderController {
     }
 
     const { answer } = req.body
-    const helpOrder = await HelpOrder.findByPk(req.params.id)
+    const helpOrder = await HelpOrder.findByPk(req.params.id, {
+      include: [
+        {
+          model: Student,
+          as: 'student',
+          attributes: ['name', 'email'],
+        },
+      ],
+    })
 
     await helpOrder.update({ answer, answered_at: new Date() })
+
+    await Queue.add(AnsweredHelpOrderMail.key, {
+      student: helpOrder.student,
+      question: helpOrder.question,
+      answer,
+    })
 
     return res.json(helpOrder)
   }

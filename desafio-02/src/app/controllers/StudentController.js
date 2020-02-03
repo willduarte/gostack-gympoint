@@ -1,6 +1,6 @@
-import * as Yup from 'yup';
+import * as Yup from 'yup'
 
-import Student from '../models/Student';
+import Student from '../models/Student'
 
 class StudentController {
   async store(req, res, next) {
@@ -18,17 +18,17 @@ class StudentController {
       height: Yup.number()
         .round()
         .required(),
-    });
+    })
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(401).json({ error: 'Invalid input' });
+      return res.status(401).json({ error: 'Invalid input' })
     }
 
-    const { name, email, age, weight, height } = req.body;
+    const { name, email, age, weight, height } = req.body
 
-    const student = await Student.create({ name, email, age, weight, height });
+    const student = await Student.create({ name, email, age, weight, height })
 
-    return res.json(student);
+    return res.json(student)
   }
 
   async update(req, res, next) {
@@ -46,19 +46,19 @@ class StudentController {
       height: Yup.number()
         .round()
         .required(),
-    });
+    })
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(401).json({ error: 'Invalid input' });
+      return res.status(401).json({ error: 'Invalid input' })
     }
 
-    const student = await Student.findByPk(req.params.id);
+    const student = await Student.findByPk(req.params.id)
 
     if (!student) {
-      return res.status(404).json({ error: 'Student not found' });
+      return res.status(404).json({ error: 'Student not found' })
     }
 
-    const { name, email, age, weight, height } = await student.update(req.body);
+    const { name, email, age, weight, height } = await student.update(req.body)
 
     return res.json({
       name,
@@ -66,8 +66,8 @@ class StudentController {
       age,
       weight,
       height,
-    });
+    })
   }
 }
 
-export default new StudentController();
+export default new StudentController()
